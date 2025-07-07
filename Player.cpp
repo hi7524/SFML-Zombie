@@ -64,14 +64,19 @@ void Player::Reset()
 
 void Player::Update(float dt)
 {
+	// 이동
 	direction.x = InputMgr::GetAxis(Axis::Horizontal);
 	direction.y = InputMgr::GetAxis(Axis::Vertical);
 	if (Utils::Magnitude(direction) > 1.f)
 	{
 		Utils::Normalize(direction);
 	}
-
 	SetPosition(position + direction * speed * dt);
+
+	// 회전
+	sf::Vector2f mousePos = (sf::Vector2f)InputMgr::GetMousePosition();
+	look = Utils::GetNormal(mousePos - GetPosition());
+	SetRotation(Utils::Angle(look));
 }
 
 void Player::Draw(sf::RenderWindow& window)
