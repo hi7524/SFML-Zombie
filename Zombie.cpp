@@ -68,7 +68,11 @@ void Zombie::Update(float dt)
 {
 	direction = Utils::GetNormal(player->GetPosition() - GetPosition());
 	SetRotation(Utils::Angle(direction));
-	SetPosition(GetPosition() + direction * speed * dt);
+
+	if (Utils::Distance(player->GetPosition(), GetPosition()) > 0.5f)
+	{
+		SetPosition(GetPosition() + direction * speed * dt);
+	}
 }
 
 void Zombie::Draw(sf::RenderWindow& window)
