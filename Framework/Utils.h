@@ -65,5 +65,3 @@ public:
 		const std::vector<sf::Vector2f>& polygonB, const sf::Transform& transformB);
 
 };
-
-

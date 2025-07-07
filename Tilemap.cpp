@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Tilemap.h"
 
-
 Tilemap::Tilemap(const std::string& name)
 	: GameObject(name)
 {

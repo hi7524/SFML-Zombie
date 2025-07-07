@@ -4,8 +4,6 @@
 #include "TileMap.h"
 #include "Zombie.h"
 
-
-
 SceneGame::SceneGame()
 	: Scene(SceneIds::Game)
 {

@@ -1,4 +1,5 @@
 #pragma once
+
 class SceneMgr : public Singleton<SceneMgr>
 {
 	friend class Singleton<SceneMgr>;
@@ -26,4 +27,3 @@ public:
 };
 
 #define SCENE_MGR (SceneMgr::Instance())
-

@@ -1,5 +1,6 @@
 #pragma once
 #include "Singleton.h"
+
 class Framework : public Singleton<Framework>
 {
 	friend Singleton<Framework>;
@@ -48,4 +49,3 @@ public:
 };
 
 #define FRAMEWORK (Framework::Instance())
-

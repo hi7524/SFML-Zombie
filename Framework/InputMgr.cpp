@@ -91,7 +91,6 @@ void InputMgr::Update(float dt)
 			axisInfo.value = 0.f;
 		}
 	}
-
 }
 
 bool InputMgr::GetKeyDown(sf::Keyboard::Key key)
@@ -172,4 +171,3 @@ sf::Vector2i InputMgr::GetMousePosition()
 {
 	return mousePosition; 
 }
-

@@ -1,7 +1,6 @@
 #pragma once
 #include "GameObject.h"
 
-
 class Tilemap : public GameObject
 {
 protected:

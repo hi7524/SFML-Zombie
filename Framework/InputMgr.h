@@ -49,4 +49,3 @@ public:
 
 	static sf::Vector2i GetMousePosition();
 };
-
