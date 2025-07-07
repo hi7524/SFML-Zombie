@@ -8,7 +8,7 @@ protected:
 
 	sf::Vector2f position;
 	float rotation = 0.f;
-	sf::Vector2f scale;
+	sf::Vector2f scale = { 1.0f, 1.0f };
 	sf::Vector2f origin;
 
 	Origins originPreset = Origins::TL;
