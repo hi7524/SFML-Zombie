@@ -13,4 +13,5 @@ public:
 	~SceneGame() override = default;
 
 	void Init() override;
+	void Enter() override;
 };

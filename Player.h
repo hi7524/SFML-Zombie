@@ -1,5 +1,8 @@
 #pragma once
 #include "GameObject.h"
+
+class SceneGame;
+
 class Player : public GameObject
 {
 protected:
@@ -10,6 +13,8 @@ protected:
 	sf::Vector2f look;
 
 	float speed = 500.f;
+
+	SceneGame* sceneGame = nullptr;
 
 public:
 	Player(const std::string& name = "");

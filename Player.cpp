@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "SceneGame.h"
 
 Player::Player(const std::string& name)
 	: GameObject(name)
@@ -44,7 +45,6 @@ void Player::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
-	//SetOrigin(Origins::MC);
 }
 
 void Player::Release()
@@ -53,6 +53,15 @@ void Player::Release()
 
 void Player::Reset()
 {
+	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
+	{
+		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+	}
+	else
+	{
+		sceneGame = nullptr;
+	}
+
 	body.setTexture(TEXTURE_MGR.Get(texId), true);
 	SetOrigin(Origins::MC);
 	SetPosition({ 0.f, 0.f });
@@ -74,8 +83,10 @@ void Player::Update(float dt)
 	SetPosition(position + direction * speed * dt);
 
 	// È¸Àü
-	sf::Vector2f mousePos = (sf::Vector2f)InputMgr::GetMousePosition();
-	look = Utils::GetNormal(mousePos - GetPosition());
+	sf::Vector2i mousePos = InputMgr::GetMousePosition();
+	sf::Vector2f mouseWorldPos = sceneGame->ScreenToWorld(mousePos);
+
+	look = Utils::GetNormal(mouseWorldPos - GetPosition());
 	SetRotation(Utils::Angle(look));
 }
 
