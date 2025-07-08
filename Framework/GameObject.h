@@ -44,11 +44,21 @@ public:
 	}
 	virtual void SetOrigin(Origins preset) { originPreset = preset; }
 
+	virtual sf::FloatRect GetLocalBounds() const
+	{
+		return { 0.0f, 0.0f, 0.0f, 0.0f };
+	}
+
+	virtual sf::FloatRect GetGlobalBounds() const
+	{
+		return { 0.0f, 0.0f, 0.0f, 0.0f };
+		// 필수 구현 요소는 아니기 때문에 순수가상함수 X, 0을 리턴해주도록 함
+	}
+
 	virtual void Init() = 0;
 	virtual void Release() = 0;
 	virtual void Reset() = 0;
 
 	virtual void Update(float dt) = 0;
 	virtual void Draw(sf::RenderWindow& window) = 0;
-
 };

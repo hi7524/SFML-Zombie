@@ -36,6 +36,13 @@ void Framework::Do()
         InputMgr::Update(deltaTime);
 
         // Update
+#ifdef DEF_DEV // DEF_DEV가 정의되어있으면 포함되어 작동
+        if (InputMgr::GetKeyDown(sf::Keyboard::F10))
+        {
+            Variables::isDrawHitBox = !Variables::isDrawHitBox;
+        }
+#endif
+
         SCENE_MGR.Update(deltaTime);
 
         // Draw
