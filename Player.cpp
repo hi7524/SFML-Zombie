@@ -6,7 +6,6 @@
 Player::Player(const std::string& name)
 	: GameObject(name)
 {
-
 }
 
 void Player::SetPosition(const sf::Vector2f& pos)
@@ -77,6 +76,8 @@ void Player::Reset()
 
 	direction = { 0.f, 0.f };
 	look = { 1.0f, 0.f };
+
+	hp = maxHp;
 }
 
 void Player::Update(float dt)
@@ -85,7 +86,7 @@ void Player::Update(float dt)
 	auto it = bulletList.begin();
 	while (it != bulletList.end())
 	{
-		if ((*it)->GetActive())
+		if (!(*it)->GetActive())
 		{
 			bulletPool.push_back(*it);
 			it = bulletList.erase(it);
@@ -114,8 +115,10 @@ void Player::Update(float dt)
 
 	hitBox.UpdateTransform(body, GetLocalBounds());
 
-	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+	shootTimer += dt;
+	if (InputMgr::GetMouseButton(sf::Mouse::Left) && shootTimer > shootInterval)
 	{
+		shootTimer = 0.f;
 		Shoot();
 	}
 }
@@ -143,8 +146,22 @@ void Player::Shoot()
 	}
 
 	bullet->Reset();
-	bullet->Fire(position + look * 10.f, look, 1000.f, 10);
+	bullet->Fire(position, look, 1000.f, 10);
 
 	bulletList.push_back(bullet);
 	sceneGame->AddGameObject(bullet);
+}
+
+void Player::OnDamage(int damage)
+{
+	if (!IsAlive())
+	{
+		return;
+	}
+
+	hp = Utils::Clamp(hp - damage, 0, maxHp);
+	if (hp == 0)
+	{
+		SCENE_MGR.ChangeScene(SceneIds::Game);
+	}
 }

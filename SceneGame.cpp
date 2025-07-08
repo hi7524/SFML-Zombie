@@ -22,7 +22,7 @@ void SceneGame::Init()
 	AddGameObject(new Tilemap("TileMap"));
 	player = (Player*)AddGameObject(new Player("Player"));
 
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 100; ++i)
 	{
 		Zombie* zombie = (Zombie*)AddGameObject(new Zombie());
 		zombie->SetActive(false);
@@ -39,7 +39,7 @@ void SceneGame::Enter()
 	sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
 
 	worldView.setSize(windowSize);
-	worldView.setCenter({ 0.0f, 0.0f });
+	worldView.setCenter({ 0.f, 0.f });
 
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
@@ -52,7 +52,7 @@ void SceneGame::Enter()
 
 void SceneGame::Exit()
 {
-	FRAMEWORK.GetWindow().setMouseCursorVisible(false);
+	FRAMEWORK.GetWindow().setMouseCursorVisible(true);
 
 	for (Zombie* zombie : zombieList)
 	{
@@ -69,6 +69,20 @@ void SceneGame::Update(float dt)
 	cursor.setPosition(ScreenToUi(InputMgr::GetMousePosition()));
 
 	Scene::Update(dt);
+
+	auto it = zombieList.begin();
+	while (it != zombieList.end())
+	{
+		if (!(*it)->GetActive())
+		{
+			zombiePool.push_back(*it);
+			it = zombieList.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
 
 	worldView.setCenter(player->GetPosition());
 
@@ -93,7 +107,7 @@ void SceneGame::Draw(sf::RenderWindow& window)
 
 void SceneGame::SpawnZombies(int count)
 {
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < count; ++i)
 	{
 		Zombie* zombie = nullptr;
 		if (zombiePool.empty())
@@ -107,11 +121,9 @@ void SceneGame::SpawnZombies(int count)
 			zombiePool.pop_front();
 			zombie->SetActive(true);
 		}
-
 		zombie->SetType((Zombie::Types)Utils::RandomRange(0, Zombie::TotalTypes));
 		zombie->Reset();
-		zombie->SetPosition(Utils::RandomInUnitCircle() * 500.0f);
-
+		zombie->SetPosition(Utils::RandomInUnitCircle() * 500.f);
 		zombieList.push_back(zombie);
 	}
 }

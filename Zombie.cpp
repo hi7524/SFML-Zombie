@@ -61,6 +61,9 @@ void Zombie::Reset()
 	SetPosition({ 0.0f, 0.0f });
 	SetRotation(0.0f);
 	SetScale({ 1.0f, 1.0f });
+
+	hp = maxHp;
+	attackTimer = 0.f;
 }
 
 void Zombie::Update(float dt)
@@ -74,6 +77,16 @@ void Zombie::Update(float dt)
 	}
 
 	hitBox.UpdateTransform(body, GetLocalBounds());
+
+	attackTimer += dt;
+	if (attackTimer > attackInterval)
+	{
+		if (Utils::CheckCollision(hitBox.rect, player->GetHitBox().rect))
+		{
+			player->OnDamage(damage);
+			attackTimer = 0.f;
+		}
+	}
 }
 
 void Zombie::Draw(sf::RenderWindow& window)
@@ -91,24 +104,33 @@ void Zombie::SetType(Types type)
 		texId = "graphics/bloater.png";
 		maxHp = 200;
 		speed = 50.0f;
-		damage = 100.0f;
-		attackIntervale = 1.0f;
+		damage = 50.f;
+		attackInterval = 1.0f;
 
 		break;
 	case Types::Chase:
 		texId = "graphics/chaser.png";
 		maxHp = 100;
 		speed = 100.0f;
-		damage = 100.0f;
-		attackIntervale = 1.0f;
+		damage = 20.f;
+		attackInterval = 1.0f;
 		break;
 
 	case Types::Crawler:
 		texId = "graphics/crawler.png";
 		maxHp = 100;
 		speed = 50.0f;
-		damage = 100.0f;
-		attackIntervale = 1.0f;
+		damage = 25.f;
+		attackInterval = 1.0f;
 		break;
+	}
+}
+
+void Zombie::OnDamage(int damage)
+{
+	hp = Utils::Clamp(hp - damage, 0, maxHp);
+	if (hp == 0)
+	{
+		SetActive(false);
 	}
 }
